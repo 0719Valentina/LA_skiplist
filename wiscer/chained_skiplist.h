@@ -12,9 +12,11 @@
 #include "metrics.h"
 #include "../SkipList/LA_skiplist.h"
 #include<unordered_map>
-extern std::unordered_map<ulong, uint8_t> accessCounter; 
-extern uint8_t totalAccess;  
-
+extern std::unordered_map<ulong, ulong> accessCounter; 
+extern ulong totalAccess; 
+extern std::vector<std::unordered_map<ulong, double>> probs;
+extern std::vector<ulong> changeTimes; 
+extern std::vector<std::vector<std::pair<ulong, double>>> sortedProbs;
 using namespace std;
 
 #define FETCH_REQ 0
@@ -34,6 +36,7 @@ private:
     ulong displacement;
     struct timespec startTime, endTime;
     SkipList<ulong, ulong> skiplist;
+    int phase=0;
    
 public:
     ChainedHashmap();

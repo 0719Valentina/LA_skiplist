@@ -1,5 +1,9 @@
 #ifdef SKIPLIST_BASE
+/*
+2024/8/7:
+更改了bulkload函数,能正常测试了
 
+*/
 #include "chained_base.h"
 #include<unordered_map>
 ChainedHashmap::ChainedHashmap():skiplist(32) {
@@ -10,7 +14,7 @@ void ChainedHashmap::initHashpower(int hashpower) {
     return;
 }
 
-void ChainedHashmap::bulkLoad(ulong *keys, ulong num_keys) {
+/*void ChainedHashmap::bulkLoad(ulong *keys, ulong num_keys) {
     vector<pair<ulong,ulong>> blukdata;
     for(int i=0;i<num_keys;i++)
     {
@@ -20,8 +24,20 @@ void ChainedHashmap::bulkLoad(ulong *keys, ulong num_keys) {
     //totalAccess += num_keys;
     //skiplist.bulkload(blukdata);
     this->cardinality = num_keys;
+}*/
+void ChainedHashmap::bulkLoad(ulong *keys, ulong num_keys) {
+    std::sort(keys, keys + num_keys);
+    vector<pair<pair<ulong,ulong>,double>> blukdata;
+    for(int i=0;i<num_keys;i++)
+    {
+        //blukdata.push_back(pair<pair<ulong,ulong>,double>(pair<ulong,ulong>(keys[i],_random()),probs[phase][keys[i]]));
+        blukdata.push_back(pair<pair<ulong,ulong>,double>(pair<ulong,ulong>(keys[i],_random()),1/num_keys));
+        //accessCounter[keys[i]] = 1;
+    }
+    //totalAccess += num_keys;
+    skiplist.bulkload(blukdata);
+    this->cardinality = num_keys;
 }
-
 Metrics ChainedHashmap::processRequests(HashmapReq *reqs, ulong count) {
     Metrics m;
     m.displacement = displacement;

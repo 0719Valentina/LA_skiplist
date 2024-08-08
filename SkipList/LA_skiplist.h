@@ -311,7 +311,7 @@ V SkipList<K,V>::search(K key)
     if(current && current->get_key()==key)
     {
         //std::cout<<"Found key:"<<key<<",value:"<<current->get_value()<<std::endl;
-        return current->value;
+        return current->get_value();
     }
     //std::cout<<"Not Found Key:"<<key<<std::endl;
     return NULL;
